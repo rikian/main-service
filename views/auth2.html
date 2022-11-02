@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lawnsoor Auth</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="{{.host}}/static/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="{{.host}}/static/dist/css/adminlte.min.css">
+    </head>
+    <body class="hold-transition login-page">
+        <!-- login section -->
+        <div id="login-box" class="login-box">
+            <div class="login-logo">
+                <p><b>Gin</b>LTE</p>
+            </div>
+            <div class="card">
+                <div class="card-body login-card-body">
+                    <p class="login-box-msg">Sign in to start your session</p>
+                    <form method="POST">
+                        <div class="input-group mb-3">
+                            <input id="email_login" type="text" class="form-control" placeholder="Email" required>
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <input id="password_login" type="password" class="form-control" placeholder="Password" required>
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                <input id="remember_me" type="checkbox" name="remember_me">
+                                <label for="agreeTerms">remember me</label>
+                            </div>
+                        </div>
+                    </form>
+                    <button id="btn-login" type="submit" class="btn btn-primary btn-block text-center">Sign In</button>
+                    <hr>
+                    <div class="text-center">Not have membership?</div>
+                    <button style="background-color: rgb(6, 121, 6);" id="form-register" class="btn btn-primary btn-block text-center">Register</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- register section -->
+        <div id="register-box" class="register-box">
+            <div class="card card-outline card-primary">
+                <div class="card-header text-center">
+                    <a href="../../index2.html" class="h1"><b>Gin</b>LTE</a>
+                </div>
+                <div class="card-body">
+                    <p class="login-box-msg">Register a new membership</p>
+            
+                    <form method="POST" enctype="application/x-www-form-urlencoded">
+                        <!-- user name -->
+                        <div class="input-group mb-3">
+                            <input id="regis-fullname" name="user_name" type="text" class="form-control" placeholder="Full name">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-user"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- email -->
+                        <div class="input-group mb-3">
+                            <input id="regis-email" name="user_email" type="email" class="form-control" placeholder="Email">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-envelope"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- password 1 -->
+                        <div class="input-group mb-3">
+                            <input id="regis-password1" name="user_password_1" type="password" class="form-control" placeholder="Password">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- password 2 -->
+                        <div class="input-group mb-3">
+                            <input id="regis-password2" name="user_password_2" type="password" class="form-control" placeholder="Retype password">
+                            <div class="input-group-append">
+                                <div class="input-group-text">
+                                    <span class="fas fa-lock"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- term & condition -->
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                <input id="regis-term" type="checkbox" name="user_terms">
+                                <label for="agreeTerms">I agree to the <a href="#">terms</a></label>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- button register -->
+                    <button id="regis-reset" type="reset" class="btn btn-primary btn-block text-center">Reset</button>
+                    <button id="regis-register" type="submit" class="btn btn-primary btn-block text-center">Register</button>
+                    <hr>
+                    <div class="text-center">I already have a membership</div>
+                    <button id="form-login" class="btn btn-primary btn-block text-center">Sign In</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- custom js -->
+        <script>
+            "use strict"
+            function qs(elm) {
+                return document.querySelector(elm)
+            }
+
+            function ce(elm) {
+                return document.createElement(elm)
+            }
+
+            var xml = new XMLHttpRequest
+
+            // swicth login register
+            var loginBox = document.querySelector("#login-box")
+            var registerBox = document.querySelector("#register-box")
+            registerBox.style.display = "none"
+            var formRegister = document.querySelector("#form-register")
+            var formLogin = document.querySelector("#form-login")
+
+            formRegister.addEventListener("click", function() {
+                registerBox.style.display = "block"
+                loginBox.style.display = "none"
+            })
+
+            formLogin.addEventListener("click", function() {
+                registerBox.style.display = "none"
+                loginBox.style.display = "block"
+            })
+
+            // login section
+            var email  = document.querySelector("#email_login")
+            var password = document.querySelector("#password_login")
+            var remember_me = document.querySelector("#remember_me")
+            var btnLogin = document.querySelector("#btn-login")
+
+            btnLogin.addEventListener("click", function() {
+                var data = "user_email=" + email.value + "&user_password=" + password.value + "&remember_me=" + remember_me.checked
+                return login(data)
+            })
+
+            function login(dataLogin) {
+                xml.open("POST", window.location.origin + "/login/", true)
+                xml.setRequestHeader("content-type", "application/x-www-form-urlencoded")
+                return xml.send(dataLogin)
+            }
+
+            // register section
+            var regisFullName = qs("#regis-fullname")
+            var regisEmail = qs("#regis-email")
+            var regisPassword1 = qs("#regis-password1")
+            var regisPassword2 = qs("#regis-password2")
+            var regisTerm = qs("#regis-term")
+            var btnReset = qs("#regis-reset")
+            var btnRegister = qs("#regis-register")
+
+            btnRegister.addEventListener("click", function() {
+                if (!regisFullName.value || !regisEmail.value || !regisPassword1.value || !regisPassword2.value || regisPassword1.value !== regisPassword2.value || !regisTerm.checked) return alert("Please corect your input")
+                var formRegister = "user_name=" + regisFullName.value + "&user_email=" + regisEmail.value + "&user_password_1=" + regisPassword1.value + "&user_password_2=" + regisPassword2.value + "&user_terms=" + regisTerm.checked
+
+                xml.open("POST", window.location.origin + "/register/", true)
+                xml.setRequestHeader("content-type", "application/x-www-form-urlencoded")
+                return xml.send(formRegister)
+            })
+
+            // Ajax response
+            xml.onload = function() {
+                try {
+                    var response = JSON.parse(this.responseText)
+                    console.log(response)
+                    // login
+                    if (response && response["method"] && response["method"] === "login") {
+                        if (
+                            response["message"] && 
+                            response["status"] && 
+                            response["message"] === "ok" &&
+                            response["status"] === 200
+                        ) {
+                            window.location.reload()
+                            return
+                        } else {
+                            alert("login error")
+                            return
+                        }
+                    }
+
+                    // register
+                    if (response && response["method"] && response["method"] === "register") {
+                        if (
+                            response["message"] && 
+                            response["status"] && 
+                            response["message"] === "ok" &&
+                            response["status"] === 200
+                        ) {
+                            window.location.reload()
+                            return
+                        } else {
+                            alert("register error")
+                            return
+                        }
+                    }
+                } catch (error) {
+                    console.log(this.responseText)
+                    // window.location.reload()
+                }
+            }
+        </script>
+    </body>
+</html>

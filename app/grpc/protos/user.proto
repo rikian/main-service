@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+import "app/grpc/protos/product.proto";
+
+package protos;
+
+option go_package = "go/service1;grpc_server1";
+
+// --------------------------------------------------------
+
+service UserRPC {
+    rpc SelectUser (DataSelectUser) returns (ResponseSelectUser) {}
+    rpc SelectUsers (DataSelectUsers) returns (ResponseSelectUsers) {}
+} 
+
+// request
+message DataSelectUser {
+    string id = 1;
+}
+
+message DataSelectUsers {
+    int32 limit = 1;
+}
+
+// response
+message ResponseSelectUser {
+    string user_id = 1;
+    string user_email = 2;
+    string user_name = 3;
+    string user_image = 4;
+    string user_status = 5;
+    string created_date = 6;
+    string last_update = 7;
+    repeated Product Products = 8;
+}
+
+message ResponseSelectUsers {
+    repeated ResponseSelectUser data = 1;
+}

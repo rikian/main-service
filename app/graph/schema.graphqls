@@ -1,0 +1,53 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+scalar Upload
+
+type Product {
+  UserId: String
+  ProductId: String
+  ProductName: String
+  ProductInfo: String
+  ProductImage: String
+  ProductStock: Int
+  ProductPrice: Int
+  ProductSell: Int
+  CreatedDate: String
+  LastUpdate: String
+}
+
+type User {
+  user_id: String
+  user_email: String
+  user_name: String
+  user_image: String
+  user_status: String
+  created_date: String
+  last_update: String
+  products: [Product]
+}
+
+type ResponseSelectUser {
+  user_id: String
+  user_email: String
+  user_name: String
+  user_image: String
+  user_status: String
+  created_date: String
+  last_update: String
+  products: [Product]
+}
+
+type ResponseSelectUsers {
+  user: [User]
+  status: String
+  code: Int
+}
+
+type Query {
+  user: ResponseSelectUser
+  users: ResponseSelectUsers
+  product: Product
+  products: [Product]
+}
